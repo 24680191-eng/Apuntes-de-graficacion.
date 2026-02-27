@@ -381,3 +381,121 @@ nombre → Cómo se llamará el objeto en Blender.
 lados → Cuántos lados tendrá la figura.
 
 radio → Qué tan grande será (distancia del centro a cada esquina).
+
+# Crear la malla y el objeto
+```bash
+
+malla = bpy.data.meshes.new(nombre)
+objeto = bpy.data.objects.new(nombre, malla)
+bpy.context.collection.objects.link(objeto)
+```
+# En Blender, todo objeto 3D necesita una malla.
+
+Primero se crea la malla (estructura vacía).
+Luego se crea el objeto que usa esa malla.
+Finalmente se agrega a la escena para que sea visible.
+
+Si no lo enlazamos a la colección, no aparecería.
+
+# Crear listas para guardar datos
+```bash
+
+vertices = []
+aristas = []
+```
+#Aquí estamos creando dos listas vacías.
+
+vertices guardará los puntos (esquinas).
+
+aristas guardará las líneas que conectan esos puntos.
+
+Piensa en los vértices como clavos y en las aristas como hilos que los conectan.
+
+ # Calcular los vértices (la parte matemática)
+```bash
+
+ for i in range(lados):
+    angulo = 2 * math.pi * i / lados
+    x = radio * math.cos(angulo)
+    y = radio * math.sin(angulo)
+    vertices.append((x, y, 0))
+```
+
+Aquí está lo más importante.
+
+¿Qué está pasando?
+Queremos que los puntos estén perfectamente distribuidos en un círculo.
+
+Entonces:
+Dividimos el círculo completo (360° o 2π radianes) entre el número de lados.
+
+Así cada punto queda separado uniformemente.
+
+La fórmula:
+
+angulo = 2πi / lados
+
+Después usamos:
+
+x = radio * cos(angulo)
+y = radio * sin(angulo)
+
+Eso convierte coordenadas circulares en coordenadas normales (X, Y).
+
+El 0 al final significa que todos los puntos estarán en el plano horizontal (2D).
+
+# Crear las aristas (conectar puntos)
+```bash
+
+for i in range(lados):
+    aristas.append((i, (i + 1) % lados))
+```
+Aquí conectamos cada punto con el siguiente.
+
+El símbolo % (módulo) es importante.
+
+Sirve para que cuando llegue al último punto, lo conecte de nuevo con el primero y así cerrar la figura.
+
+Si no hicieras eso, quedaría abierta.
+
+# Crear la cara (relleno)
+```bash
+
+caras = [list(range(lados))]
+```
+Esto le dice a Blender:
+
+"Une todos estos puntos en una sola superficie".
+
+# Cargar todo en la malla 
+```bash
+
+malla.from_pydata(vertices, aristas, caras)
+malla.update()
+```
+Aquí finalmente se le pasa toda la información a Blender:
+
+Los puntos
+
+Las líneas
+
+La superficie
+
+Y se actualiza la malla para que aparezca.
+
+# Llamar a la función
+```bash
+
+crear_poligono_2d("Poligono2D", lados=6, radio=5)
+```
+Esto ejecuta todo lo anterior.
+
+Le estamos diciendo:
+
+Nombre: "Poligono2D"
+
+Lados: 6
+
+Radio: 5
+
+Resultado: se crea un hexágono regular centrado en el origen.
