@@ -285,11 +285,99 @@ ASI TIENE QUE VERSE
 
 <img width="2879" height="1815" alt="image" src="https://github.com/user-attachments/assets/26253cd1-d57b-43ae-a2d5-69440bd6b68b" />
 
+# 1.5. Representación y trazo de líneas y polígonos.
+```bash
 
+import bpy
+import math
 
+# Limpiar la escena antes de empezar
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
 
+def crear_poligono_2d(nombre, lados, radio):
+    # Crear una nueva malla y un nuevo objeto
+    malla = bpy.data.meshes.new(nombre)
+    objeto = bpy.data.objects.new(nombre, malla)
 
+    # Vincular el objeto a la escena actual
+    bpy.context.collection.objects.link(objeto)
 
+    vertices = []
+    aristas = []
 
+    # Cálculo de vértices usando coordenadas polares a cartesianas
+    for i in range(lados):
+        angulo = 2 * math.pi * i / lados
+        x = radio * math.cos(angulo)
+        y = radio * math.sin(angulo)
+        vertices.append((x, y, 0))  # Z = 0 para mantenerlo en 2D
 
- 
+    # Definir las conexiones (aristas) entre los vértices
+    for i in range(lados):
+        aristas.append((i, (i + 1) % lados))
+
+    # Definir la cara del polígono
+    caras = [list(range(lados))]
+
+    # Cargar los datos en la malla
+    malla.from_pydata(vertices, aristas, caras)
+    malla.update()
+
+# Llamada a la función: Un hexágono de radio 5
+crear_poligono_2d("Poligono2D", lados=6, radio=5)
+```
+# ¿Qué hace este código en general?
+
+Este código crea una figura geométrica regular (por ejemplo un triángulo, cuadrado, pentágono, hexágono, etc.) dentro de Blender usando matemáticas.
+
+En este caso específico, crea un hexágono porque se le indican 6 lados.
+
+# Importaciones
+```bash
+import bpy
+import math
+```
+# Aquí estamos trayendo dos herramientas:
+
+bpy → Es el módulo que permite controlar Blender con código. Sin esto no podríamos crear objetos.
+
+math → Nos da funciones matemáticas como:
+
+pi (π)
+
+cos() (coseno)
+
+sin() (seno)
+
+Estas funciones son necesarias para calcular los puntos del polígono.
+# Limpiar la escena
+```bash
+
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+```
+
+Esto hace dos cosas:
+
+Selecciona todos los objetos que estén en la escena.
+Los elimina.
+¿Por qué se hace esto?
+Para empezar desde cero y que no haya otros objetos molestando.
+
+# La función principal
+```bash
+
+def crear_poligono_2d(nombre, lados, radio):
+```
+# Aquí estamos creando una función.
+
+Una función es un bloque de código que hace algo específico cuando lo llamamos.
+
+Esta función necesita tres cosas:
+
+nombre → Cómo se llamará el objeto en Blender.
+
+lados → Cuántos lados tendrá la figura.
+
+radio → Qué tan grande será (distancia del centro a cada esquina).
