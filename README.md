@@ -499,3 +499,152 @@ Lados: 6
 Radio: 5
 
 Resultado: se crea un hexágono regular centrado en el origen.
+
+# te dejo una imagen
+<img width="2879" height="1827" alt="image" src="https://github.com/user-attachments/assets/7866215d-7525-4241-9329-d02aa9787701" />
+
+
+# FLOR DE VIDA
+```bash
+
+import bpy
+import math
+
+# Limpiar escena
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+
+# Parámetros de la figura
+radio = 3
+angulo_actual = 0
+paso_angular = 20
+
+# 1. Círculo central
+bpy.ops.mesh.primitive_circle_add(radius=radio, location=(0, 0, 0), vertices=64)
+
+
+while angulo_actual < 360:
+    
+    x = radio * math.cos(math.radians(angulo_actual))
+    y = radio * math.sin(math.radians(angulo_actual))
+    
+    bpy.ops.mesh.primitive_circle_add(radius=radio, location=(x, y, 0), vertices=64)
+    
+    # Actualización de estado
+    angulo_actual += paso_angular
+```
+
+Este código está escrito en Python usando la API bpy de Blender, y sirve para generar varios círculos distribuidos alrededor de un círculo central formando un patrón circular.
+
+# 1. Importación de librerías
+```bash
+
+import bpy
+import math
+```
+
+bpy → Es la librería de Blender que permite crear y manipular objetos dentro de la escena.
+
+math → Se usa para realizar cálculos matemáticos, especialmente funciones trigonométricas como seno y coseno.
+
+# 2. Limpiar la escena
+```bash
+
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+```
+
+Primero se seleccionan todos los objetos de la escena y luego se eliminan.
+
+Esto asegura que la escena esté vacía antes de crear las nuevas figuras.
+
+# 3. Parámetros de la figura
+radio = 3
+angulo_actual = 0
+paso_angular = 20
+
+radio = 3 → Define el tamaño del círculo.
+
+angulo_actual = 0 → Ángulo inicial desde donde empieza el patrón.
+
+paso_angular = 20 → Cantidad de grados que avanzará en cada repetición del ciclo.
+
+Esto significa que se creará un círculo cada 20 grados hasta completar los 360°.
+
+# 4. Círculo central
+```bash
+
+bpy.ops.mesh.primitive_circle_add(radius=radio, location=(0, 0, 0), vertices=64)
+```
+
+Se crea un círculo en el centro de la escena:
+
+radius=radio → Tamaño del círculo.
+
+location=(0, 0, 0) → Posición en el origen.
+
+vertices=64 → Cantidad de vértices (más vértices = círculo más suave).
+
+# 5. Ciclo while (Generación del patrón circular)
+```bash
+
+while angulo_actual < 360:
+```
+
+Este ciclo se repetirá mientras el ángulo sea menor a 360 grados.
+
+Eso garantiza que se complete toda la circunferencia.
+
+# 6. Cálculo de coordenadas
+x = radio * math.cos(math.radians(angulo_actual))
+y = radio * math.sin(math.radians(angulo_actual))
+
+Aquí se aplica trigonometría:
+
+math.radians() convierte grados a radianes (porque Python trabaja en radianes).
+
+cos() calcula la coordenada en X.
+
+sin() calcula la coordenada en Y.
+
+Fórmula usada:
+
+x = r cos(θ)
+y = r sen(θ)
+
+Esto permite posicionar cada nuevo círculo exactamente sobre la circunferencia del círculo central.
+
+# 7. Crear círculo en la nueva posición
+```bash
+
+bpy.ops.mesh.primitive_circle_add(radius=radio, location=(x, y, 0), vertices=64)
+```
+
+Se crea un nuevo círculo:
+
+Con el mismo radio.
+
+En la posición calculada.
+
+En el plano Z = 0.
+
+# 8. Actualización del ángulo
+angulo_actual += paso_angular
+
+Aquí se aumenta el ángulo en 20 grados en cada iteración.
+
+Si el paso es 20°:
+```bash
+
+360 / 20 = 18 círculos
+```
+
+Por lo tanto, se crearán 18 círculos alrededor del central.
+
+# TE DEJO UNA PEQUEÑA DEMOSTRACION
+
+
+https://github.com/user-attachments/assets/ee69d78f-10f3-46fc-99df-ce6d098ceb44
+
+
+
